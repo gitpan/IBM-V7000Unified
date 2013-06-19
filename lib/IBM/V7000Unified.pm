@@ -6,7 +6,7 @@ use warnings;
 use IBM::StorageSystem;
 use Carp qw(croak);
 
-our $VERSION = '0.02';
+our $VERSION = '0.021';
 
 our @METHODS=qw(array disk drive enclosure export fabric filesystem health host 
 interface iogroup mount node quota service snapshot task vdisk);
@@ -73,13 +73,18 @@ sub new {
         return $self
 }
 
+
+1;
+
+__END__
+
 =head1 NAME
 
 IBM::V7000Unified - Perl API to IBM V7000 Unified CLI
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =head1 SYNOPSIS
 
@@ -90,7 +95,7 @@ IBM::V7000Unified is a Perl API to IBM V7000 Unified CLI.
 =head3 new 
 
         my $ibm = IBM::V7000Unified->new(      
-					user            => 'admin',
+										user            => 'admin',
                                         host            => 'my-v7000-unified.company.com',
                                         key_path        => '/path/to/my/.ssh/private_key'
                         ) or die "Couldn't create object! $!\n";
@@ -336,8 +341,8 @@ which corresponds with the array indexes of tier types as returned by the B<tier
 For example, to print each tier type and the corresponding tier capacity for this cluster:
 
         for ( my $i = 0; $i < scalar @{ $ibm->tier } ; $i++ ) {
-                print "Tier: " . $ibm->tier->[$i] .
-                        " - Capacity: " . $ibm->tier_capacity->[$i] . "\n"
+                print "Tier: " . $ibm->tier->[$i] 
+					. " - Capacity: " . $ibm->tier_capacity->[$i] . "\n"
         }
 
 =head3 tier_free_capacity
@@ -870,16 +875,6 @@ This is a functionally equivalent non-caching implementation of the B<interface>
                 print "\tRole: " . $interface->isubordinate_or_master . "\n----------\n";
         }
         
-                 'node:interface' => 'mgmt002st001:ethXsl1_1',
-                 'MAC' => '00%3A90%3Afa%3A05%3A88%3A9e',
-                 'IPaddresses' => '',
-                 'MTU' => '1500',
-                 'up_or_down' => 'UP',
-                 'lsnwinterface' => 'lsnwinterface',
-                 'speed' => '10000',
-                 'master_or_subordinate' => 'SUBORDINATE',
-                 'transmit_hash_policy' => ''
-
 Returns an array of L<IBM::StorageSystem::Interface> objects representing all interfaces on the target system.
 
 =head3 iogroup( $id )
@@ -932,7 +927,7 @@ Returns an array of L<IBM::StorageSystem::IOGroup> objects representing all conf
         # Print mount status of file system fs1
         print "Mount status: " . $ibm->mount(fs1) . "\n";
 
-        # Print only those file system that aren’t mounted
+        # Print only those file system that are not mounted
         map { print $_->file_system . " is not mounted.\n" }
         grep { $_->mount_status ne ’mounted’ }
         $ibm->get_mounts;
@@ -1145,7 +1140,4 @@ by the Free Software Foundation; or the Artistic License.
 
 See http://dev.perl.org/licenses/ for more information.
 
-
 =cut
-
-1;
