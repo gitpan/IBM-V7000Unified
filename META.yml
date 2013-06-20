@@ -21,4 +21,4 @@ requires:
   IBM::StorageSystem: 0
   Net::OpenSSH: 0
   Test::More: 0
-version: 0.021
+version: 0.022
